@@ -42,6 +42,7 @@ INSTALLED_APPS = [
     'procrastinate.contrib.django',
     'django_vite',
     'apps.accounts',
+    'apps.api',
     'apps.core'
 ]
 
