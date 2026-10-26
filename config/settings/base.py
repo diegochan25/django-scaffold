@@ -27,8 +27,8 @@ S3_BUCKET = env.str('S3_BUCKET')
 
 SMTP_USER = env.str('SMTP_USER')
 SMTP_PASSWORD = env.str('SMTP_PASSWORD')
-SMTP_HOST = env.int('SMTP_HOST')
-SMTP_PORT = env.str('SMTP_PORT')
+SMTP_HOST = env.str('SMTP_HOST')
+SMTP_PORT = env.int('SMTP_PORT', default=587)
 SMTP_STARTTLS = env.str('SMTP_STARTTLS')
 SMTP_FROM = env.str('SMTP_FROM')
 
