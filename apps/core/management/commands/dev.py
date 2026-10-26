@@ -1,14 +1,13 @@
 import os
 import shutil
 import subprocess
-
 from django.conf import settings
 from django.core.management import call_command
 from django.core.management.base import BaseCommand, CommandError
 
+
 FRONTEND_DIR = settings.BASE_DIR / 'frontend'
 VITE_BIN = FRONTEND_DIR / 'node_modules' / 'vite' / 'bin' / 'vite.js'
-
 
 class Command(BaseCommand):
     help = 'Run the Vite dev server alongside the Django development server.'

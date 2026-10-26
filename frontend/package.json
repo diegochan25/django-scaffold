@@ -1,19 +1,19 @@
 {
-  "name": "django-scaffold-frontend",
-  "private": true,
-  "type": "module",
-  "scripts": {
-    "dev": "vite",
-    "build": "vite build"
-  },
-  "devDependencies": {
-    "@tailwindcss/vite": "^4.3.3",
-    "tailwindcss": "^4.3.3",
-    "vite": "^8.3.5"
-  },
-  "dependencies": {
-    "alpinejs": "^3.17.5",
-    "htmx.org": "^2.0.11",
-    "lucide": "^1.61.0"
-  }
+    "name": "frontend",
+    "private": true,
+    "type": "module",
+    "scripts": {
+        "dev": "vite",
+        "build": "vite build"
+    },
+    "devDependencies": {
+        "@tailwindcss/vite": "^4.3.3",
+        "tailwindcss": "^4.3.3",
+        "vite": "^8.3.5"
+    },
+    "dependencies": {
+        "alpinejs": "^3.17.5",
+        "htmx.org": "^2.0.11",
+        "lucide": "^1.61.0"
+    }
 }
