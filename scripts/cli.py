@@ -15,7 +15,7 @@ def copy(name: str, dest: Path | None = None, desc: str | None = None):
     if re.match(r'^([A-Z0-9]|[A-Z0-9][A-Z0-9._-]*[A-Z0-9])$', name, re.IGNORECASE) is None:
         secho(f"'{name}' is not a valid package name.", fg='red', err=True)
         exit(1)
-    dest = Path(dest).resolve() if dest is not None else Path(getcwd()) / name
+    dest = Path(dest).resolve() if dest is not None else BASE_DIR.parent / name
     if dest.exists() and dest.stat().st_size:
         secho(f"Directory '{dest}' exists and is not empty.", fg='red', err=True)
         exit(1)
