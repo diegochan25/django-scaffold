@@ -16,7 +16,7 @@ dependencies = [
     "procrastinate[django]>=3.10.0",
     "psycopg>=3.3.6",
     "pyyaml>=6.0.3",
-    "toml>=0.10.2",
+    "tomlkit>=0.15.2",
     "typer>=0.27.3",
     "whitenoise>=6.12.0",
 ]

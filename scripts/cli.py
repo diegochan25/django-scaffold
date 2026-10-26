@@ -1,7 +1,7 @@
 from os import getcwd
 import re
 import shutil
-import toml
+import tomlkit
 from pathlib import Path
 from typer import Typer, secho
 
@@ -22,13 +22,15 @@ def copy(name: str, dest: Path | None = None, desc: str | None = None):
     shutil.copytree(BASE_DIR, dest, ignore=shutil.ignore_patterns('*pyc', '__pycache__', '.git', '.venv', 'dist', 'scripts'))
     with open(dest / 'README.md', 'w', encoding='utf-8') as readme:
         readme.write(f"# {name}\n")
-    pyproject_toml = toml.load(dest / 'pyproject.toml')
+    pyproject_toml = tomlkit.parse((dest / 'pyproject.toml').read_text(encoding='utf-8'))
     pyproject_toml['project']['name'] = name
-    cli_deps = ('toml', 'typer')
-    pyproject_toml['project']['dependencies'] = [
+    cli_deps = ('tomlkit', 'typer')
+    dependencies = tomlkit.array().multiline(True)
+    dependencies.extend(
         dep for dep in pyproject_toml['project']['dependencies']
         if not str(dep).strip().startswith(cli_deps)
-    ]
+    )
+    pyproject_toml['project']['dependencies'] = dependencies
 
     if desc is not None:
         pyproject_toml['project']['description'] = desc
@@ -38,13 +40,13 @@ def copy(name: str, dest: Path | None = None, desc: str | None = None):
     pyproject_toml['project'].pop('scripts', None)
 
     with open(dest / 'pyproject.toml', 'w', encoding='utf-8') as file:
-        toml.dump(pyproject_toml, file)
+        file.write(tomlkit.dumps(pyproject_toml))
 
     secho(f"Django project '{name}' successfully created at '{dest.parent}'", fg='white')
 
 @app.command('--version')
 def version():
-    version = toml.load(BASE_DIR / 'pyproject.toml')['project']['version'] or '0.1.0'
+    version = tomlkit.parse((BASE_DIR / 'pyproject.toml').read_text(encoding='utf-8'))['project']['version'] or '0.1.0'
     secho(f"Django scaffold version {version}.")
 
 def main():
