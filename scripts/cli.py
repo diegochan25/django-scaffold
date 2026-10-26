@@ -20,6 +20,8 @@ def copy(name: str, dest: Path | None = None, desc: str | None = None):
         secho(f"Directory '{dest}' exists and is not empty.", fg='red', err=True)
         exit(1)
     shutil.copytree(BASE_DIR, dest, ignore=shutil.ignore_patterns('*pyc', '__pycache__', '.git', '.venv', 'dist', 'scripts'))
+    with open(dest / 'README.md', 'w', encoding='utf-8') as readme:
+        readme.write(f"# {name}\n")
     pyproject_toml = toml.load(dest / 'pyproject.toml')
     pyproject_toml['project']['name'] = name
     cli_deps = ('toml', 'typer')
