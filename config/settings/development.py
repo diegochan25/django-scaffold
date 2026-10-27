@@ -9,7 +9,7 @@ DEBUG = True
 
 INSTALLED_APPS += ['django_browser_reload']
 
-MIDDLEWARE += ['django_browser_reload.BrowserReloadMiddleware']
+MIDDLEWARE += ['django_browser_reload.middleware.BrowserReloadMiddleware']
 
 STORAGES['staticfiles'] = {
     'BACKEND': 'django.contrib.staticfiles.storage.StaticFilesStorage'
