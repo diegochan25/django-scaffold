@@ -1,4 +1,4 @@
 @import "tailwindcss";
-@source "../../apps/**/jinja2/**/*.html";
-@source "../../jinja2/**/*.html";
-@source "../src/**/*.js";
+@source "../../apps/**/*.{html,j2,js,py}";
+@source "../../jinja2/**/*.{html,j2}";
+@source not "../../apps/**/migrations";
