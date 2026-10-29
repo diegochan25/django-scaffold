@@ -42,6 +42,10 @@ def _global_resolver(kind):
     def resolve(path):
         return f'{GLOBAL_PREFIX}{DELIMITER}{kind}/{path}'
     return resolve
+    
+
+def url(name, *args, **kwargs):
+    return reverse(name, args=args, kwargs=kwargs)
 
 
 layout = _app_resolver('layouts')
@@ -74,7 +78,7 @@ def environment(**options):
     env = Environment(**options)
     env.globals.update({
         'static': static,
-        'url': reverse,
+        'url': url,
         'layout': layout,
         'macro': macro,
         'partial': partial,
