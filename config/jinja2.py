@@ -66,7 +66,7 @@ def browser_reload():
 def _scoped_loader():
     mapping = {GLOBAL_PREFIX: FileSystemLoader(JINJA2_DIR)}
     for config in apps.get_app_configs():
-        mapping[f'{APP_PREFIX}{config.label}'] = FileSystemLoader(Path(config.path) / 'jinja2')
+        mapping[f'{APP_PREFIX}{config.label}'] = FileSystemLoader(Path(config.path) / 'jinja2' / config.label)
     return PrefixLoader(mapping, delimiter=DELIMITER)
 
 def environment(**options):
