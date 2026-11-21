@@ -1,4 +1,6 @@
-import { createIcons, icons } from "lucide";
+import { createInertiaApp } from "@inertiajs/svelte";
 import "#css/styles.css";
 
-createIcons({ icons });
+createInertiaApp({
+    pages: { directory: "../views" },
+});
