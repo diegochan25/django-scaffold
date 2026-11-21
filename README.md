@@ -1,6 +1,6 @@
 # Django Scaffold
 
-An opinionated starter for Django projects built on [Inertia.js](https://inertiajs.com/) with no frontend framework, a Vite + Tailwind CSS frontend, PostgreSQL, S3-compatible media storage, and a custom email-based user model, all wired up and ready to build on.
+An opinionated starter for Django projects built on [Inertia.js](https://inertiajs.com/) with [React](https://react.dev/), a Vite + Tailwind CSS frontend, PostgreSQL, S3-compatible media storage, and a custom email-based user model, all wired up and ready to build on.
 
 ## Stack
 
@@ -9,7 +9,7 @@ An opinionated starter for Django projects built on [Inertia.js](https://inertia
 | Framework | Django 6.1+ on Python 3.14+ |
 | Database | PostgreSQL (`psycopg` 3) |
 | Page protocol | Inertia.js (`inertia-django`) |
-| Frontend | Vite and Tailwind CSS 4, via `django-vite` |
+| Frontend | React 19, Vite and Tailwind CSS 4, via `django-vite` |
 | Background jobs | Procrastinate (`procrastinate.contrib.django`) |
 | API | `django-ninja` (`NinjaAPI` instance in `apps/api`, served under `/api/`) |
 | Media storage | S3-compatible, via `django-storages` |
@@ -105,7 +105,7 @@ CSRF follows Inertia's convention: the cookie is `XSRF-TOKEN` and the header is 
 
 ## Frontend
 
-The Vite project lives in [frontend/](frontend/). The entry point is [src/js/main.js](frontend/src/js/main.js), which imports [src/css/styles.css](frontend/src/css/styles.css) (Tailwind). `src/views/` and `src/components/` are empty and ready for your pages and shared pieces. Client-side Inertia setup in `main.js` is left for you to write.
+The Vite project lives in [frontend/](frontend/). The entry point is [src/js/main.jsx](frontend/src/js/main.jsx), which boots the Inertia React app and imports [src/css/styles.css](frontend/src/css/styles.css) (Tailwind). Pages are React components in `src/views/`, resolved by name: `inertia.render(request, "Dashboard")` loads `src/views/Dashboard.jsx` (subfolders work too, e.g. `"Users/Index"`). Shared pieces go in `src/components/`.
 
 - **Development:** `manage.py dev` starts Vite for you. Templates load assets from the dev server with HMR.
 - **Production:** build the bundle, then collect static files.
