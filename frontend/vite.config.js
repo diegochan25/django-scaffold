@@ -10,13 +10,13 @@ export default defineConfig({
         outDir: resolve(import.meta.dirname, "../static/vite"),
         emptyOutDir: true,
         rollupOptions: {
-            input: resolve(import.meta.dirname, "src/main.js"),
-        }
+            input: resolve(import.meta.dirname, "src/js/main.js"),
+        },
     },
     server: {
         host: "localhost",
         port: 5173,
         strictPort: true,
         cors: true,
-    }
+    },
 });

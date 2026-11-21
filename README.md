@@ -1,6 +1,6 @@
 # Django Scaffold
 
-An opinionated starter for Django projects: Jinja2 templates, a Vite + Tailwind + HTMX + Alpine frontend, PostgreSQL, S3-compatible media storage, and a custom email-based user model, all wired up and ready to build on.
+An opinionated starter for Django projects built on [Inertia.js](https://inertiajs.com/) with no frontend framework, a Vite + Tailwind CSS frontend, PostgreSQL, S3-compatible media storage, and a custom email-based user model, all wired up and ready to build on.
 
 ## Stack
 
@@ -8,8 +8,8 @@ An opinionated starter for Django projects: Jinja2 templates, a Vite + Tailwind 
 | --- | --- |
 | Framework | Django 6.1+ on Python 3.14+ |
 | Database | PostgreSQL (`psycopg` 3) |
-| Templates | Jinja2 (Django templates remain available) |
-| Frontend | Vite, Tailwind CSS 4, HTMX, Alpine.js, Lucide icons, via `django-vite` |
+| Page protocol | Inertia.js (`inertia-django`) |
+| Frontend | Vite and Tailwind CSS 4, via `django-vite` |
 | Background jobs | Procrastinate (`procrastinate.contrib.django`) |
 | API | `django-ninja` (`NinjaAPI` instance in `apps/api`, served under `/api/`) |
 | Media storage | S3-compatible, via `django-storages` |
@@ -27,10 +27,9 @@ apps/
   core/          Shared app; hosts the `dev` management command
 config/
   settings/      base, development, staging, production, testing
-  jinja2.py      Jinja2 environment and template helpers
   urls.py        Root URL conf
-frontend/        Vite project (src/main.js, src/styles.css)
-jinja2/          Global Jinja2 templates (base.html.j2)
+frontend/        Vite project (src/js, src/css, src/views, src/components)
+templates/       base.html, the Inertia root template
 manage.py
 ```
 
@@ -98,9 +97,15 @@ See [.env.example](.env.example) for the full list.
 | `SMTP_USER`, `SMTP_PASSWORD`, `SMTP_HOST`, `SMTP_PORT`, `SMTP_STARTTLS`, `SMTP_FROM` | Outgoing email |
 | `VITE_DEV_MODE` | Force Vite dev mode on or off (defaults to on in `development`) |
 
+## Inertia
+
+Views return `inertia.render(request, "<Component>", props={...})`. On the first request Django renders [templates/base.html](templates/base.html), which embeds the page JSON and loads the Vite bundle; later navigations are XHR requests that return JSON only. `INERTIA_LAYOUT` in settings points at that template.
+
+CSRF follows Inertia's convention: the cookie is `XSRF-TOKEN` and the header is `X-XSRF-TOKEN` (see `CSRF_COOKIE_NAME` / `CSRF_HEADER_NAME` in settings).
+
 ## Frontend
 
-The Vite project lives in [frontend/](frontend/). Its entry point is [frontend/src/main.js](frontend/src/main.js), which starts Alpine, exposes HTMX, renders Lucide icons (and re-renders them after each HTMX swap), and imports the Tailwind stylesheet.
+The Vite project lives in [frontend/](frontend/). The entry point is [src/js/main.js](frontend/src/js/main.js), which imports [src/css/styles.css](frontend/src/css/styles.css) (Tailwind). `src/views/` and `src/components/` are empty and ready for your pages and shared pieces. Client-side Inertia setup in `main.js` is left for you to write.
 
 - **Development:** `manage.py dev` starts Vite for you. Templates load assets from the dev server with HMR.
 - **Production:** build the bundle, then collect static files.
@@ -111,15 +116,6 @@ The Vite project lives in [frontend/](frontend/). Its entry point is [frontend/s
   ```
 
   The build is written to `static/vite/` with a manifest that `django-vite` reads.
-
-## Templates
-
-Templates use Jinja2. [config/jinja2.py](config/jinja2.py) adds helpers on top of the usual Django globals (`static`, `url`, `now`, `DEBUG`) and `vite_assets()`:
-
-- **Global templates** live in the top-level `jinja2/` directory and are referenced with `global_layout()`, `global_macro()` and `global_partial()`.
-- **App templates** live in `apps/<app>/jinja2/` and are referenced from within the same app with `layout()`, `macro()` and `partial()`, which resolve to `layouts/`, `macros/` and `partials/` subdirectories.
-
-[jinja2/base.html.j2](jinja2/base.html.j2) is the base layout. It loads the Vite assets and sets the CSRF header for HTMX requests.
 
 ## Users
 

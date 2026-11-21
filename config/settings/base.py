@@ -41,9 +41,10 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'procrastinate.contrib.django',
     'django_vite',
+    'inertia',
     'apps.accounts',
     'apps.api',
-    'apps.core'
+    'apps.core',
 ]
 
 MIDDLEWARE = [
@@ -55,11 +56,18 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
+    'inertia.middleware.InertiaMiddleware',
 ]
 
 ROOT_URLCONF = 'config.urls'
 
 AUTH_USER_MODEL = 'accounts.User'
+
+INERTIA_LAYOUT = 'base.html'
+
+# Inertia's client sends the CSRF token from the XSRF-TOKEN cookie in X-XSRF-TOKEN.
+CSRF_COOKIE_NAME = 'XSRF-TOKEN'
+CSRF_HEADER_NAME = 'HTTP_X_XSRF_TOKEN'
 
 SERIALIZATION_MODULES = {
     'yml': 'django.core.serializers.pyyaml',
@@ -74,18 +82,9 @@ CONTEXT_PROCESSORS = [
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [],
+        'DIRS': [BASE_DIR / 'templates'],
         'APP_DIRS': True,
         'OPTIONS': {
-            'context_processors': CONTEXT_PROCESSORS
-        }
-    },
-    {
-        'BACKEND': 'django.template.backends.jinja2.Jinja2',
-        'DIRS': [BASE_DIR / 'jinja2'],
-        'APP_DIRS': True,
-        'OPTIONS': {
-            'environment': 'config.jinja2.environment',
             'context_processors': CONTEXT_PROCESSORS
         }
     }

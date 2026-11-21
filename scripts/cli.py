@@ -1,4 +1,3 @@
-from os import getcwd
 import re
 import shutil
 import tomlkit
@@ -7,6 +6,17 @@ from typer import Typer, secho
 
 
 BASE_DIR = Path(__file__).resolve().parent.parent
+
+IGNORED_PATTERNS = shutil.ignore_patterns('*pyc', '__pycache__', '.git', '.venv', 'dist', 'node_modules', 'scripts', 'uv.lock')
+BUILD_OUTPUT = BASE_DIR / 'static' / 'vite'
+
+
+def ignore(directory, names):
+    ignored = set(IGNORED_PATTERNS(directory, names))
+    if Path(directory).resolve() == BUILD_OUTPUT.parent:
+        ignored.update(name for name in names if name == BUILD_OUTPUT.name)
+    return ignored
+
 
 app = Typer()
 
@@ -19,7 +29,7 @@ def copy(name: str, dest: Path | None = None, desc: str | None = None):
     if dest.exists() and dest.stat().st_size:
         secho(f"Directory '{dest}' exists and is not empty.", fg='red', err=True)
         exit(1)
-    shutil.copytree(BASE_DIR, dest, ignore=shutil.ignore_patterns('*pyc', '__pycache__', '.git', '.venv', 'dist', 'scripts'))
+    shutil.copytree(BASE_DIR, dest, ignore=ignore)
     with open(dest / 'README.md', 'w', encoding='utf-8') as readme:
         readme.write(f"# {name}\n")
     pyproject_toml = tomlkit.parse((dest / 'pyproject.toml').read_text(encoding='utf-8'))
